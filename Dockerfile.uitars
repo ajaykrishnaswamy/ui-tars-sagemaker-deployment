@@ -1,0 +1,16 @@
+# Use public HuggingFace container as base (faster download)
+FROM huggingface/transformers-pytorch-gpu:4.41.0
+
+# Update to ensure we have compatible transformers version
+RUN pip install --upgrade transformers>=4.40.0 torch>=2.0.0 accelerate>=0.20.0
+
+# Set environment variables
+ENV HF_MODEL_ID=ByteDance-Seed/UI-TARS-1.5-7B
+ENV HF_TASK=image-to-text
+
+# Copy any additional requirements if needed
+COPY requirements.txt /opt/ml/code/requirements.txt
+RUN pip install -r /opt/ml/code/requirements.txt
+
+# Set working directory
+WORKDIR /opt/ml/code
